@@ -1,0 +1,20 @@
+{
+  "name": "gtfs-rt2mongo",
+  "version": "0.0.1",
+  "description": "translate GTFS-Realtime msg feed to mongo db",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Stefan Begerad",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.18",
+    "protobufjs": "^6.10.2"
+  }
+}
