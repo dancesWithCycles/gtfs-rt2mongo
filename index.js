@@ -16,14 +16,20 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 require('dotenv').config();
+const helmet = require('helmet');
+const compression = require('compression');
 const debug=require('debug')('gtfs-rt2mongo')
 const protobuf=require('protobufjs')
 const xpress=require('express')
 const bodyParser = require('body-parser');
+const https = require('https');
+const fs = require('fs');
 const mongoose = require('./mongooseConnect')
 const Location=require('./models/location.js')
 
 const app = xpress();
+app.use(compression()); //Compress all routes
+app.use(helmet());//protect against vulnerabilities
 app.use(bodyParser.raw({type: 'application/octet-stream'}))
 
 run().catch(err => {
@@ -69,7 +75,7 @@ async function run() {
 	loc.vehicle=''
 	loc.label=''
 	loc.licensePlate=''
-	debug('new loc: %s',loc);
+	//debug('new loc: %s',loc);
 
 	dataDecoded.entity.forEach(function(entity){
 	    if(entity.vehicle){
@@ -129,8 +135,7 @@ async function run() {
 		debug('entity unsupported')
             }
 	})
-
-	debug('new loc: %s',loc);
+	//debug('new loc: %s',loc);
 
 	//check database for existing locations
 	findLocation(loc);
@@ -140,7 +145,20 @@ async function run() {
     
     const PORT=parseInt(process.env.PORT, 10)||55555
     debug('PORT: '+PORT)
-    await app.listen(PORT)
+    //await app.listen(PORT)
+    // pass 'app' to 'https' server
+    if (process.env.NODE_ENV !== 'production') {
+	await app.listen(PORT);
+    }else{
+	const PHRASE=process.env.PHRASE||'phrase';
+	debug('PHRASE: '+PHRASE)
+	https.createServer({
+	    key: fs.readFileSync('./p'),
+            cert: fs.readFileSync('./f'),
+            passphrase: PHRASE
+	}, app)
+	    .listen(PORT, ()=>debug('listening on port '+PORT))
+    }
 
     const db=mongoose.connection
     db.once('open', _ => {

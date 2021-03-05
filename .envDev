@@ -6,4 +6,4 @@ MONGOOSE_TYPE=mongodb://
 PORT=55555
 NODE_ENV=development
 ROUTE=/post
-
+PHRASE=phrase
