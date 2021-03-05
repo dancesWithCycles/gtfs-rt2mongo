@@ -61,18 +61,44 @@ async function run() {
 
 	//create new Location instance based on request
 	let loc = new Location()
-	loc.uuid='test';
+	loc.uuid=''
 	loc.lat=0;
 	loc.lon=0;
 	loc.ts=0;
-	loc.alias='test';
-	loc.vehicle='test';
+	loc.alias=''
+	loc.vehicle=''
+	loc.label=''
+	loc.licensePlate=''
 	debug('new loc: %s',loc);
 
 	dataDecoded.entity.forEach(function(entity){
 	    if(entity.vehicle){
 		debug('vehicle position')
 		const vehicle=entity.vehicle
+		if(vehicle.vehicle){
+		    debug('vehicle')
+		    const vehDes=vehicle.vehicle
+		    if(vehDes.id){
+			debug('id: %s',vehDes.id)
+			loc.uuid=vehDes.id
+		    }else{
+			debug('id unavailable')
+		    }
+		    if(vehDes.label){
+			debug('label: %s',vehDes.label)
+			loc.label=vehDes.label
+		    }else{
+			debug('label unavailable')
+		    }
+		    if(vehDes.licensePlate){
+			debug('licensePlate: %s',vehDes.licensePlate)
+			loc.licensePlate=vehDes.licensePlate
+		    }else{
+			debug('licensePlate unavailable')
+		    }
+		}else{
+		    debug('vehicle unavailable')
+		}
 		if(vehicle.position){
 		    debug('position')
 		    const position=vehicle.position
@@ -92,6 +118,12 @@ async function run() {
 		    }
 		}else{
 		    debug('position unavailable')
+		}
+		if(vehicle.timestamp){
+		    debug('timestamp: %s',vehicle.timestamp)
+		    loc.ts=vehicle.timestamp
+		}else{
+		    debug('timestamp unavailable')
 		}
             }else{
 		debug('entity unsupported')
@@ -125,6 +157,8 @@ function updateLocation(locA,locB){
     locA.ts=locB.ts
     locA.alias=locB.alias
     locA.vehicle=locB.vehicle
+    locA.label=locB.label
+    locA.licensePlate=locB.licensePlate
 }    
 
 function saveLocation(loc){

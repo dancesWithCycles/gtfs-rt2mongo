@@ -25,7 +25,9 @@ const locationSchema=new Schema({
     lon:{type:Number,min:-180,max:180},
     ts:Number,
     alias:String,
-    vehicle:String
+    vehicle:String,
+    label:String,
+    licensePlate:String
 })
 
 /*convert Schema into a Model*/
