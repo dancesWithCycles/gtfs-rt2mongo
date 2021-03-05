@@ -51,7 +51,7 @@ async function run() {
     const FeedMessage = root.lookupType("transit_realtime.FeedMessage")
     const FeedEntity = root.lookupType("transit_realtime.FeedEntity");
 
-    const ROUTE=parseInt(process.env.ROUTE, 10)||'/post';
+    const ROUTE=process.env.ROUTE||'/post';
     debug('ROUTE: '+ROUTE)
     
     app.post(ROUTE, function(req, res) {
