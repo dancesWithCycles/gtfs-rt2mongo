@@ -18,7 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 require('dotenv').config();
 const helmet = require('helmet');
 const compression = require('compression');
-const debug=require('debug')('gtfs-rt2mongo')
+const debug=require('debug')('gtfs-rt-post2mongo')
 const protobuf=require('protobufjs')
 const xpress=require('express')
 const bodyParser = require('body-parser');

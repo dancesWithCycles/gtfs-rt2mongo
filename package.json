@@ -1,7 +1,7 @@
 {
-  "name": "gtfs-rt2mongo",
+  "name": "gtfs-rt-post2mongo",
   "version": "0.0.1",
-  "description": "translate GTFS-Realtime msg feed to mongo db",
+  "description": "translate a GTFS-Realtime message feed from HTTP POST request to a mongo db",
   "main": "index.js",
   "scripts": {
       "dev": "nodemon index.js",
